@@ -16,10 +16,10 @@ import java.sql.Date;
  * @package top.ytazwc.poi.entity
  * @description
  */
-@TableName("teachers")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@TableName("teachers")
 public class Teacher implements Serializable {
 
     @TableField("id")

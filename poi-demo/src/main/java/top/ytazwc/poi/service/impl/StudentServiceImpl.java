@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import top.ytazwc.poi.entity.Student;
 import top.ytazwc.poi.mapper.StudentMapper;
+import top.ytazwc.poi.service.StudentService;
 
 /**
  * @author 花木凋零成兰
@@ -13,5 +14,5 @@ import top.ytazwc.poi.mapper.StudentMapper;
  * @description
  */
 @Service
-public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> {
+public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 }

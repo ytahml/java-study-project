@@ -15,10 +15,10 @@ import java.sql.Date;
  * @package top.ytazwc.poi.entity
  * @description
  */
-@TableName("students")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@TableName("students")
 public class Student implements Serializable {
 
     private Integer id ;
