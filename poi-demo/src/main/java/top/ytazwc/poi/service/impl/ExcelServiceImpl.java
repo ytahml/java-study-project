@@ -20,7 +20,7 @@ import java.util.List;
  * @title ExcelServiceImpl
  * @date 2024-12-12 20:49
  * @package top.ytazwc.poi.service.impl
- * @description
+ * @description 单线程 无优化实现导出
  */
 @Service
 public class ExcelServiceImpl implements ExcelService {
@@ -56,7 +56,9 @@ public class ExcelServiceImpl implements ExcelService {
     private boolean buildStudent(Workbook workbook, Sheet sheet) {
         boolean result = true;
         // 查询需要的数据
-        List<Student> list = studentService.lambdaQuery().last("LIMIT 100000").list();
+        List<Student> list = studentService.lambdaQuery()
+                .last("LIMIT 100000")
+                .list();
         // 表头
         final String[] header = ExcelUtil.STUDENT_INFO;
         // 行号
@@ -146,6 +148,21 @@ public class ExcelServiceImpl implements ExcelService {
             cell = row.createCell(colIndex ++);
             cell.setCellValue(tea.getId());
 
+            cell = row.createCell(colIndex ++);
+            cell.setCellValue(tea.getName());
+
+            cell = row.createCell(colIndex ++);
+            cell.setCellValue(tea.getSubject());
+
+            cell = row.createCell(colIndex ++);
+            cell.setCellValue(tea.getEmail());
+
+            // 雇佣日期
+            cell = row.createCell(colIndex ++);
+            cell.setCellValue(tea.getHireDate());
+
+            cell = row.createCell(colIndex ++);
+            cell.setCellValue(tea.getSalary());
 
         }
 

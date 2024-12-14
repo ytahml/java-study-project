@@ -14,3 +14,10 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+excel:
+  pool:
+    max-pool-size: 3
+    core-pool-size: 3
+    keep-alive-time: 0
+    max-queue-size: 10
+    name-prefix: excel
