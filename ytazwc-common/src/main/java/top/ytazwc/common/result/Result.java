@@ -2,6 +2,8 @@ package top.ytazwc.common.result;
 
 import lombok.AllArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author 花木凋零成兰
  * @title Result
@@ -10,7 +12,7 @@ import lombok.AllArgsConstructor;
  * @description 结果
  */
 @AllArgsConstructor
-public final class Result<T> {
+public final class Result<T> implements Serializable {
 
     private String msg;
 
