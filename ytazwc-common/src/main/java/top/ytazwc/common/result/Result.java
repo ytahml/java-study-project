@@ -1,6 +1,7 @@
 package top.ytazwc.common.result;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @package top.ytazwc.common.result
  * @description 结果
  */
+@Data
 @AllArgsConstructor
 public final class Result<T> implements Serializable {
 
