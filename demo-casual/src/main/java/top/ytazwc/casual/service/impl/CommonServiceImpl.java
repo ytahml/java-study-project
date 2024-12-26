@@ -28,7 +28,7 @@ public class CommonServiceImpl implements CommonService {
         String newPath = FileUtil.replaceLinux(path);
         // 获取相对路径
         String needPath = newPath.substring(newPath.lastIndexOf(FileUtil.LINUX_SEPARATOR)) + FileUtil.LINUX_SEPARATOR;
-        log.info("新相对路径:{}", newPath);
+        log.info("新相对路径:{}", needPath);
         // 目录对象
         File directory = new File(path);
         if (!(directory.exists() && directory.isDirectory())) {
