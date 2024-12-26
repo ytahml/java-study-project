@@ -40,20 +40,22 @@ public class CommonServiceImpl implements CommonService {
             return list;
         }
         for (File file : files) {
-            if (file.isFile()) {
-                // 文件名
-                String name = file.getName();
-                // 跳过index
-                if ("index".equals(name)) {
-                    continue;
-                }
-                // 去除后缀
-                String text = name.substring(0, name.lastIndexOf(FileUtil.PERIODS));
-                // 获得 link
-                String link = needPath + text;
-                LinkVO vo = new LinkVO(text, link);
-                list.add(vo);
+            // 跳过非文件
+            if (!file.isFile()) {
+                continue;
             }
+            // 文件名
+            String name = file.getName();
+            // 去除后缀
+            String text = name.substring(0, name.lastIndexOf(FileUtil.PERIODS));
+            // 跳过index
+            if ("index".equals(text)) {
+                continue;
+            }
+            // 获得 link
+            String link = needPath + text;
+            LinkVO vo = new LinkVO(text, link);
+            list.add(vo);
         }
         return list;
     }
