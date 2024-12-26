@@ -2,9 +2,13 @@ package top.ytazwc.casual.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.ytazwc.casual.service.CommonService;
+import top.ytazwc.casual.vo.LinkVO;
+
+import java.util.List;
 
 /**
  * @author 花木凋零成兰
@@ -21,7 +25,10 @@ public class CommonController {
     @Autowired
     private CommonService service;
 
-//    @GetMapping("/build-link")
-//    public
+    @GetMapping("/build-link")
+    public List<LinkVO> buildLink(String path) {
+        List<LinkVO> list = service.buildLink(path);
+        return list;
+    }
 
 }
