@@ -8,11 +8,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="demo-casual" />
+        <module name="ytazwc-common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="poi-demo" target="1.8" />
+      <module name="demo-casual" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
