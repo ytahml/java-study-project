@@ -43,6 +43,10 @@ public class CommonServiceImpl implements CommonService {
             if (file.isFile()) {
                 // 文件名
                 String name = file.getName();
+                // 跳过index
+                if ("index".equals(name)) {
+                    continue;
+                }
                 // 去除后缀
                 String text = name.substring(0, name.lastIndexOf(FileUtil.PERIODS));
                 // 获得 link

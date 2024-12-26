@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.ytazwc.casual.service.CommonService;
 import top.ytazwc.casual.vo.LinkVO;
+import top.ytazwc.common.result.Result;
 
 import java.util.List;
 
@@ -26,9 +27,9 @@ public class CommonController {
     private CommonService service;
 
     @GetMapping("/build-link")
-    public List<LinkVO> buildLink(String path) {
+    public Result<List<LinkVO>> buildLink(String path) {
         List<LinkVO> list = service.buildLink(path);
-        return list;
+        return Result.success(list);
     }
 
 }
