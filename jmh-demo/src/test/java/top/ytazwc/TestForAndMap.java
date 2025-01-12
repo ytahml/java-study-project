@@ -3,6 +3,7 @@ package top.ytazwc;
 import cn.hutool.core.util.RandomUtil;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
+import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
@@ -46,6 +47,8 @@ public class TestForAndMap {
         Options opt = new OptionsBuilder()
                 .include(TestForAndMap.class.getSimpleName())
                 .forks(1)
+                .resultFormat(ResultFormatType.JSON)
+                .result("/E:/data/result.json")
                 .build();
         new Runner(opt).run();
     }
