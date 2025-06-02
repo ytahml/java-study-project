@@ -1,4 +1,4 @@
-package top.ytazwc.common.result;
+package top.ytahml.common.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author 花木凋零成兰
  * @title Result
  * @date 2024-12-26 21:08
- * @package top.ytazwc.common.result
+ * @package top.ytahml.common.result
  * @description 结果
  */
 @Data

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>top.ytazwc</groupId>
+    <groupId>top.ytahml</groupId>
     <artifactId>itheima-juc-study</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.7</version>
+            <version>1.2.11</version> <!-- 支持 Java 8 -->
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>

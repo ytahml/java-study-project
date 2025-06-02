@@ -1,4 +1,4 @@
-package top.ytazwc.common.result;
+package top.ytahml.common.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Getter;
  * @author 花木凋零成兰
  * @title ResultCodeEnum
  * @date 2024-12-26 22:07
- * @package top.ytazwc.common.result
+ * @package top.ytahml.common.result
  * @description
  */
 @Getter
