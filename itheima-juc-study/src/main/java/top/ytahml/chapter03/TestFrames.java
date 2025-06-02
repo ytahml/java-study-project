@@ -11,6 +11,12 @@ public class TestFrames {
 
     public static void main(String[] args) {
 
+        // 另一个子线程
+        Thread t1 = new Thread(() -> {
+            method1(20);
+        }, "t1");
+        t1.start();
+
         method1(10);
 
     }
