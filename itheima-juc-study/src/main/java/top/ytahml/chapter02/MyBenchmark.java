@@ -1,4 +1,4 @@
-package top.ytazwc.chapter02;
+package top.ytahml.chapter02;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.results.format.ResultFormatType;
@@ -15,7 +15,7 @@ import java.util.concurrent.FutureTask;
  * @author 花木凋零成兰
  * @title MyBenchmark
  * @date 2024-11-26 22:45
- * @package top.ytazwc.chapter02
+ * @package top.ytahml.chapter02
  * @description
  * <a href="https://www.cnblogs.com/54chensongxia/p/15485421.html">JMH 使用指南</a>
  */
