@@ -17,8 +17,13 @@ public class JoinMethodTest {
 
     static int r = 0;
 
+    static int r1 = 0;
+
+    static int r2 = 0;
+
     public static void main(String[] args) throws InterruptedException {
-        test1();
+//        test1();
+        test2();
     }
 
     private static void test1() throws InterruptedException {
@@ -37,6 +42,36 @@ public class JoinMethodTest {
         t1.start();
         t1.join();
         log.debug("结果为: {}", r);
+        log.debug("结束");
+    }
+
+    // 同步等待多个线程执行结束
+    private static void test2() throws InterruptedException {
+        log.debug("开始");
+
+        Thread t1 = new Thread(() -> {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            r1 = 10;
+        }, "t1");
+        Thread t2 = new Thread(() -> {
+            try {
+                sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            r2 = 20;
+        }, "t2");
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+
+        log.debug("r1结果为: {}, r2结果为: {}", r1, r2);
         log.debug("结束");
     }
 
