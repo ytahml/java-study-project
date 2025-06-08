@@ -12,11 +12,11 @@ import java.util.List;
  */
 public class ThreadUnsafeTest {
 
-    static final int THREAD_NUMBER = 2;
-    static final int LOOP_NUMBER = 200;
+    static final int THREAD_NUMBER = 5;
+    static final int LOOP_NUMBER = 20000;
 
     public static void main(String[] args) {
-        ThreadSafe test = new ThreadSafe();
+        ThreadSafeSubClass test = new ThreadSafeSubClass();
         for (int i = 0; i < THREAD_NUMBER; i++) {
             new Thread(() -> test.method1(LOOP_NUMBER), "t" + (i + 1)).start();
         }
@@ -57,12 +57,20 @@ class ThreadSafe {
         }
     }
 
-    private void method2(List<String> list) {
+    public void method2(List<String> list) {
         list.add("1");
     }
 
-    private void method3(List<String> list) {
+    public void method3(List<String> list) {
         list.remove(0);
     }
 
+}
+
+class ThreadSafeSubClass extends ThreadSafe {
+    @Override
+    public void method3(List<String> list) {
+        // 局部变量引用 暴露给了新线程；会出现线程安全
+        new Thread(() -> list.remove(0)).start();
+    }
 }
