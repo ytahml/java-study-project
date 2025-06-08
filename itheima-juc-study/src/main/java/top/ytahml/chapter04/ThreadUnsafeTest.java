@@ -16,11 +16,9 @@ public class ThreadUnsafeTest {
     static final int LOOP_NUMBER = 200;
 
     public static void main(String[] args) {
-        ThreadUnsafe test = new ThreadUnsafe();
+        ThreadSafe test = new ThreadSafe();
         for (int i = 0; i < THREAD_NUMBER; i++) {
-            new Thread(() -> {
-                test.method1(LOOP_NUMBER);
-            }, "t" + (i + 1)).start();
+            new Thread(() -> test.method1(LOOP_NUMBER), "t" + (i + 1)).start();
         }
     }
 
@@ -28,6 +26,7 @@ public class ThreadUnsafeTest {
 
 class ThreadUnsafe {
 
+    // 成员变量线程不安全
     final List<String> list = new ArrayList<>();
 
     public void method1(int loop) {
@@ -37,11 +36,32 @@ class ThreadUnsafe {
         }
     }
 
-    public void method2() {
+    private void method2() {
         list.add("1");
     }
 
-    public void method3() {
+    private void method3() {
+        list.remove(0);
+    }
+
+}
+
+class ThreadSafe {
+
+    public void method1(int loop) {
+        // 局部变量引用没有暴露在外面
+        final List<String> list = new ArrayList<>();
+        for (int i = 0; i < loop; i++) {
+            method2(list);
+            method3(list);
+        }
+    }
+
+    private void method2(List<String> list) {
+        list.add("1");
+    }
+
+    private void method3(List<String> list) {
         list.remove(0);
     }
 
