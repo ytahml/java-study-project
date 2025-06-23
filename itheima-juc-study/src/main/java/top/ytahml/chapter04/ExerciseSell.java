@@ -16,6 +16,7 @@ import java.util.Vector;
  * @date 2025-06-23 20:27
  * @package top.ytahml.chapter04
  * @description 卖票练习
+ * 多个线程对共享变量存在读写操作，存在线程安全
  */
 @Slf4j
 public class ExerciseSell {
@@ -24,7 +25,7 @@ public class ExerciseSell {
 
     public static void main(String[] args) {
 
-        TicketWindow ticketWindow = new TicketWindow(60000);
+        TicketWindow ticketWindow = new TicketWindow(6000);
         List<Thread> threads = new ArrayList<>();
         // 存储卖出多少张票
         List<Integer> sellCount = new Vector<>();
@@ -32,7 +33,7 @@ public class ExerciseSell {
             Thread t = new Thread(() -> {
                 // 买票操作
                 // 分析竟态条件:
-                int count = ticketWindow.sell(random.nextInt(5) + 1);
+                int count = ticketWindow.sell(random.nextInt(20) + 1);
                 sellCount.add(count);
                 try {
                     // 增加线程突出
@@ -68,7 +69,7 @@ class TicketWindow {
 
     private int count;
 
-    public int sell(int amount) {
+    public synchronized int sell(int amount) {
         if (this.count >= amount) {
             this.count -= amount;
             // 返回卖出去票的数量统计
