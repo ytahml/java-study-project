@@ -13,7 +13,7 @@ import java.util.Random;
  * @title ExerciseTransfer
  * @date 2025-06-23 21:22
  * @package top.ytahml.chapter04
- * @description
+ * @description 共享变量的读写
  */
 @Slf4j
 public class ExerciseTransfer {
@@ -56,9 +56,13 @@ class Account {
 
     // 转账
     public void transfer(Account target, int amount) {
-        if (this.money >= amount) {
-            this.setMoney(this.getMoney() - amount);
-            target.setMoney(target.getMoney() + amount);
+        synchronized (Account.class) {
+            // 当a向b转账时，若锁this对象，即锁的是a实例，则保证a向b转正只有一个线程访问修改this.money，即只有一个线程访问a.money
+            // 但是无法保证target.money只有一个线程访问修改，即无法阻止b向a转账时，对b.money的修改
+            if (this.money >= amount) {
+                this.setMoney(this.getMoney() - amount);
+                target.setMoney(target.getMoney() + amount);
+            }
         }
     }
 
