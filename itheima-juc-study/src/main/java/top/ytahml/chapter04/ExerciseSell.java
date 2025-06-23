@@ -21,7 +21,7 @@ import java.util.Vector;
 @Slf4j
 public class ExerciseSell {
 
-    private static Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
 
@@ -33,7 +33,7 @@ public class ExerciseSell {
             Thread t = new Thread(() -> {
                 // 买票操作
                 // 分析竟态条件:
-                int count = ticketWindow.sell(random.nextInt(20) + 1);
+                int count = ticketWindow.sell(RANDOM.nextInt(20) + 1);
                 sellCount.add(count);
                 try {
                     // 增加线程突出
