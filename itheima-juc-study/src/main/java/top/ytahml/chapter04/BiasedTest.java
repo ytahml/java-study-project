@@ -20,6 +20,9 @@ public class BiasedTest {
 //        Thread.sleep(5000);
         Dog dog = new Dog();
 
+        // 调用hashcode方法会清除偏向锁
+        System.out.println(dog.hashCode());
+
         System.out.println("【初始对象头】");
         System.out.println(ClassLayout.parseInstance(dog).toPrintable());
 
