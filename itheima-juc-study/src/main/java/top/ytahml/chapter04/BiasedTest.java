@@ -3,7 +3,6 @@ package top.ytahml.chapter04;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.openjdk.jol.info.ClassLayout;
-import org.openjdk.jol.vm.VM;
 
 /**
  * @author 花木凋零成兰
@@ -11,19 +10,26 @@ import org.openjdk.jol.vm.VM;
  * @date 2025-07-06 16:36
  * @package top.ytahml.chapter04
  * @description 偏向锁测试
+ * -XX:BiasedLockingStartupDelay=0 偏向锁加载延迟为0
  */
 @Slf4j
 public class BiasedTest {
 
     @SneakyThrows
     public static void main(String[] args) {
-        // 查看对象对象头
+//        Thread.sleep(5000);
         Dog dog = new Dog();
-        System.out.println(VM.current().details());
+
+        System.out.println("【初始对象头】");
         System.out.println(ClassLayout.parseInstance(dog).toPrintable());
 
-        Thread.sleep(4000);
-        System.out.println(ClassLayout.parseInstance(new Dog()).toPrintable());
+        synchronized (dog) {
+            System.out.println("【首次加锁后（期望偏向锁）】");
+            System.out.println(ClassLayout.parseInstance(dog).toPrintable());
+        }
+
+        System.out.println("【释放锁后】");
+        System.out.println(ClassLayout.parseInstance(dog).toPrintable());
 
     }
 
