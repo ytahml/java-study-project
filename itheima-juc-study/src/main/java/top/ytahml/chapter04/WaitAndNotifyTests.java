@@ -33,7 +33,7 @@ public class WaitAndNotifyTests {
                         throw new RuntimeException(e);
                     }
                 }
-                log.debug("外卖送到没? [{}]", hasCigarette);
+                log.debug("外卖送到没? [{}]", hasTakeout);
                 if (hasTakeout) {
                     log.debug("可以开始干活了");
                 } else {
@@ -74,7 +74,7 @@ public class WaitAndNotifyTests {
             synchronized (ROOM) {
                 hasCigarette = true;
                 log.debug("烟到了噢!");
-                ROOM.notify();
+                ROOM.notifyAll();
             }
         }, "送烟的").start();
 
