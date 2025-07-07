@@ -13,6 +13,20 @@ import top.ytahml.utils.ThreadUtils;
 @Slf4j
 public class WaitAndNotifyTests {
 
+    /**
+     * 正确使用姿势:
+     * synchronized(lock) {
+     *    while(条件不成立) {
+     *        lock.wait();
+     *    }
+     * // 干活
+     * }
+     * //另一个线程
+     * synchronized(lock) {
+     *     lock.notifyAll();
+     * }
+     */
+
     // 房间
     static final Object ROOM = new Object();
     // 是否有🚬
