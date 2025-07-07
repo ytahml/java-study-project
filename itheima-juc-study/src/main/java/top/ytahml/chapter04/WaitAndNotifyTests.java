@@ -23,6 +23,27 @@ public class WaitAndNotifyTests {
 
         new Thread(() -> {
             synchronized (ROOM) {
+                log.debug("外卖送到没? [{}]", hasTakeout);
+                if (!hasTakeout) {
+                    log.debug("没外卖, 先歇会!");
+//                    ThreadUtils.sleep(2000);
+                    try {
+                        ROOM.wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                log.debug("外卖送到没? [{}]", hasCigarette);
+                if (hasTakeout) {
+                    log.debug("可以开始干活了");
+                } else {
+                    log.debug("没干成活!");
+                }
+            }
+        }, "小兰").start();
+
+        new Thread(() -> {
+            synchronized (ROOM) {
                 log.debug("有烟没? [{}]", hasCigarette);
                 if (!hasCigarette) {
                     log.debug("没烟, 先歇会!");
