@@ -26,7 +26,12 @@ public class WaitAndNotifyTests {
                 log.debug("有烟没? [{}]", hasCigarette);
                 if (!hasCigarette) {
                     log.debug("没烟, 先歇会!");
-                    ThreadUtils.sleep(2000);
+//                    ThreadUtils.sleep(2000);
+                    try {
+                        ROOM.wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 log.debug("有烟没? [{}]", hasCigarette);
                 if (hasCigarette) {
@@ -45,8 +50,11 @@ public class WaitAndNotifyTests {
 
         ThreadUtils.sleep(1000);
         new Thread(() -> {
-            hasCigarette = true;
-            log.debug("烟到了噢!");
+            synchronized (ROOM) {
+                hasCigarette = true;
+                log.debug("烟到了噢!");
+                ROOM.notify();
+            }
         }, "送烟的").start();
 
     }
