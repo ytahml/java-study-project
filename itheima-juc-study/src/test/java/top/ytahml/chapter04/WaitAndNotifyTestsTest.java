@@ -74,8 +74,28 @@ public class WaitAndNotifyTestsTest {
     /**
      * sleep(long n) 是Thread方法，wait(long n) 是Object方法
      * sleep 不需要强制和 synchronized 配合使用；wait需要
-     *
+     * sleep 在睡眠的同时，不会释放对象锁，但wait在等待的时候会释放对象锁
+     * sleep 和 wait 方法执行后，线程均进入 TIMED_WAITING 状态
      */
+    @Test
+    public void sleepVsWait() {
+//        Thread t1 = getThreadSleep("t1", 20000);
+        Thread t1 = getThread("t1", 20000);
+        t1.start();
+        ThreadUtils.sleep(1000);
+        synchronized (LOCK) {
+            log.debug("主线程获得锁");
+        }
+    }
+
+
+    private static Thread getThreadSleep(String name, int timeout) {
+        return new Thread(() -> {
+            synchronized (LOCK) {
+                log.debug("获得锁 ...");
+                ThreadUtils.sleep(timeout);            }
+        }, name);
+    }
 
 
 
