@@ -93,7 +93,8 @@ public class WaitAndNotifyTestsTest {
         return new Thread(() -> {
             synchronized (LOCK) {
                 log.debug("获得锁 ...");
-                ThreadUtils.sleep(timeout);            }
+                ThreadUtils.sleep(timeout);
+            }
         }, name);
     }
 
