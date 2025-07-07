@@ -24,7 +24,7 @@ public class WaitAndNotifyTests {
         new Thread(() -> {
             synchronized (ROOM) {
                 log.debug("外卖送到没? [{}]", hasTakeout);
-                if (!hasTakeout) {
+                while (!hasTakeout) {
                     log.debug("没外卖, 先歇会!");
 //                    ThreadUtils.sleep(2000);
                     try {
@@ -45,7 +45,7 @@ public class WaitAndNotifyTests {
         new Thread(() -> {
             synchronized (ROOM) {
                 log.debug("有烟没? [{}]", hasCigarette);
-                if (!hasCigarette) {
+                while (!hasCigarette) {
                     log.debug("没烟, 先歇会!");
 //                    ThreadUtils.sleep(2000);
                     try {
