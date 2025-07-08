@@ -1,4 +1,4 @@
-package top.ytahml.chapter04;
+package top.ytahml.chapter04.pattern;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

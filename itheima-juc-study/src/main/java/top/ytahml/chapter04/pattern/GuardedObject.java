@@ -1,5 +1,7 @@
-package top.ytahml.chapter04;
+package top.ytahml.chapter04.pattern;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 /**
@@ -9,10 +11,19 @@ import lombok.SneakyThrows;
  * @package top.ytahml.chapter04
  * @description
  */
+@NoArgsConstructor
 public class GuardedObject<T> {
+
+    @Getter
+    private int id;
 
     // 结果
     private T response;
+
+
+    public GuardedObject(int id) {
+        this.id = id;
+    }
 
     // 获取结果
     @SneakyThrows

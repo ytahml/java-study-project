@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
  <trees>
-     <tree path="/itheima-juc-study/src/main/java/top/ytahml/chapter04/GuardedObject.java" title="同步模式—保护性暂停"/>
+     <tree path="/itheima-juc-study/src/main/java/top/ytahml/chapter04/pattern/GuardedObject.java" title="同步模式—保护性暂停"/>
+     <tree path="/itheima-juc-study/src/main/java/top/ytahml/chapter04/pattern/GuardedCollection.java"
+           title="模式-保护性暂停-扩展"/>
  </trees>
