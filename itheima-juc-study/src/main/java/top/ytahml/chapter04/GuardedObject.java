@@ -25,6 +25,27 @@ public class GuardedObject<T> {
         }
     }
 
+    // 获取结果；增加超时时间
+    @SneakyThrows
+    public T get(long timeout) {
+        synchronized (this) {
+            // 记录一个开始时间
+            long begin = System.currentTimeMillis();
+            // 经历时间
+            long passedTime = 0;
+            while (response == null) {
+                long waitTime = timeout - passedTime;
+                if (waitTime <= 0) {
+                    break;
+                }
+                this.wait(waitTime);
+                // 经理时间
+                passedTime = System.currentTimeMillis() - begin;
+            }
+            return response;
+        }
+    }
+
     // 赋值结果
     public void complete(T response) {
         synchronized (this) {
