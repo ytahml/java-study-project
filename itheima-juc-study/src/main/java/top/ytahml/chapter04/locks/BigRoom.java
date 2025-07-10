@@ -13,15 +13,18 @@ import top.ytahml.utils.ThreadUtils;
 @Slf4j
 public class BigRoom {
 
+    private final Object studyRoom = new Object();
+    private final Object badRoom = new Object();
+
     public void sleep() {
-        synchronized (this) {
+        synchronized (badRoom) {
             log.debug("睡觉2小时 ...");
             ThreadUtils.sleep(2000);
         }
     }
 
     public void study() {
-        synchronized (this) {
+        synchronized (studyRoom) {
             log.debug("学习1小时 ...");
             ThreadUtils.sleep(1000);
         }
