@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import top.ytahml.utils.ThreadUtils;
 
-import static org.junit.Assert.*;
-
 /**
  * @author 花木凋零成兰
  * @title MessageQueueTest
