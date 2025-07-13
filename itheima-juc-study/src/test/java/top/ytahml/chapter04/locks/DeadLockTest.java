@@ -47,7 +47,7 @@ public class DeadLockTest {
         t1.start();
         t2.start();
 
-        sleep(3000);
+        sleep(3000000);
 
     }
 
