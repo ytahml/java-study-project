@@ -1,7 +1,5 @@
 package top.ytahml.chapter04.locks;
 
-import static org.junit.Assert.*;
-
 /**
  * @author 花木凋零成兰
  * @title PhilosopherTest

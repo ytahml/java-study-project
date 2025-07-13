@@ -37,10 +37,18 @@ public class Philosopher extends Thread {
     public void run() {
         while (true) {
             // 获得左手筷子
-            synchronized (left) {
+            if (left.tryLock()) {
                 // 右手筷子
-                synchronized (right) {
-                    eat();
+                try {
+                    if (right.tryLock()) {
+                        try {
+                            eat();
+                        } finally {
+                            right.unlock();
+                        }
+                    }
+                } finally {
+                    left.unlock();
                 }
                 // 放下右手
             }

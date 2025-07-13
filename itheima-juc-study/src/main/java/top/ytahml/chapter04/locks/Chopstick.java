@@ -1,9 +1,8 @@
 package top.ytahml.chapter04.locks;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author 花木凋零成兰
@@ -12,11 +11,12 @@ import lombok.ToString;
  * @package top.ytahml.chapter04.locks
  * @description 筷子
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Chopstick {
+public class Chopstick extends ReentrantLock {
 
     private String name;
 
