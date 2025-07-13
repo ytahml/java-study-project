@@ -4,9 +4,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static org.junit.Assert.*;
 import static top.ytahml.utils.ThreadUtils.sleep;
 
 /**
@@ -57,5 +57,41 @@ public class ReentrantLockTestsTest {
         sleep(2000);
 
     }
+
+    @Test
+    public void test2() {
+        Thread t1 = new Thread(() -> {
+            // 尝试获取锁
+            log.debug("尝试获取到锁 ...");
+            boolean result = false;
+            try {
+                result = LOCK.tryLock(2, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                log.debug("获取锁异常: {}", e.getMessage());
+                return;
+            }
+            if (!result) {
+                log.warn("获取不到锁 ...");
+                return;
+            }
+            try {
+                log.debug("获得锁 ...");
+            } finally {
+                LOCK.unlock();
+            }
+
+        }, "t1");
+
+        // 主线程先获取到锁
+        LOCK.lock();
+        t1.start();
+        sleep(1000);
+        // 主线程1s后释放锁
+        LOCK.unlock();
+
+        sleep(5000);
+    }
+
+
 
 }
