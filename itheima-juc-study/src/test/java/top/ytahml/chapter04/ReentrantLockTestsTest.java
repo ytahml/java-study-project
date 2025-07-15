@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static top.ytahml.utils.ThreadUtils.sleep;
@@ -63,7 +64,7 @@ public class ReentrantLockTestsTest {
         Thread t1 = new Thread(() -> {
             // 尝试获取锁
             log.debug("尝试获取到锁 ...");
-            boolean result = false;
+            boolean result;
             try {
                 result = LOCK.tryLock(2, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
@@ -92,6 +93,26 @@ public class ReentrantLockTestsTest {
         sleep(5000);
     }
 
+    // ReentrantLock 默认是不公平的，可以设置为公平
+
+    // ReentrantLock 条件变量
+    @SneakyThrows
+    @Test
+    public void conditionTest() {
+        // 创建条件变量
+        Condition condition1 = LOCK.newCondition();
+        Condition condition2 = LOCK.newCondition();
+
+        LOCK.lock();
+        // 当条件1不满足时，等待
+        // 需要获得锁，才能等待；可以被唤醒、打断、超时
+        condition1.await();
+
+        // 随机唤醒条件变量1的一个等待线程
+        condition1.signal();
+        // 唤醒条件变量1的所有等待线程
+        condition1.signalAll();
+    }
 
 
 }
