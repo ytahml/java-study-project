@@ -2,6 +2,9 @@ package top.ytahml.chapter04;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @author 花木凋零成兰
  * @title SequentialControl
@@ -16,26 +19,50 @@ public class SequentialControl {
     // t2是否运行过
     static boolean t2_RUNNER = false;
 
+    static final ReentrantLock REENTRANT_LOCK = new ReentrantLock();
+    static final Condition CONDITION = REENTRANT_LOCK.newCondition();
+
     public static void main(String[] args) {
 
         Thread t1 = new Thread(() -> {
-            synchronized (LOCK) {
+//            synchronized (LOCK) {
+//                while (!t2_RUNNER) {
+//                    try {
+//                        LOCK.wait();
+//                    } catch (InterruptedException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//                log.debug("1");
+//            }
+            REENTRANT_LOCK.lock();
+            try {
                 while (!t2_RUNNER) {
                     try {
-                        LOCK.wait();
+                        CONDITION.await();
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 }
                 log.debug("1");
+            } finally {
+                REENTRANT_LOCK.unlock();
             }
         }, "t1");
 
         Thread t2 = new Thread(() -> {
-            synchronized (LOCK) {
+//            synchronized (LOCK) {
+//                log.debug("2");
+//                t2_RUNNER = true;
+//                LOCK.notifyAll();
+//            }
+            REENTRANT_LOCK.lock();
+            try {
                 log.debug("2");
                 t2_RUNNER = true;
-                LOCK.notifyAll();
+                CONDITION.signal();
+            } finally {
+                REENTRANT_LOCK.unlock();
             }
         }, "t2");
 
