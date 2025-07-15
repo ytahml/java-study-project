@@ -3,6 +3,7 @@ package top.ytahml.chapter04;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -35,19 +36,21 @@ public class SequentialControl {
 //                }
 //                log.debug("1");
 //            }
-            REENTRANT_LOCK.lock();
-            try {
-                while (!t2_RUNNER) {
-                    try {
-                        CONDITION.await();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                log.debug("1");
-            } finally {
-                REENTRANT_LOCK.unlock();
-            }
+//            REENTRANT_LOCK.lock();
+//            try {
+//                while (!t2_RUNNER) {
+//                    try {
+//                        CONDITION.await();
+//                    } catch (InterruptedException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//                log.debug("1");
+//            } finally {
+//                REENTRANT_LOCK.unlock();
+//            }
+            LockSupport.park();
+            log.debug("1");
         }, "t1");
 
         Thread t2 = new Thread(() -> {
@@ -56,14 +59,16 @@ public class SequentialControl {
 //                t2_RUNNER = true;
 //                LOCK.notifyAll();
 //            }
-            REENTRANT_LOCK.lock();
-            try {
-                log.debug("2");
-                t2_RUNNER = true;
-                CONDITION.signal();
-            } finally {
-                REENTRANT_LOCK.unlock();
-            }
+//            REENTRANT_LOCK.lock();
+//            try {
+//                log.debug("2");
+//                t2_RUNNER = true;
+//                CONDITION.signal();
+//            } finally {
+//                REENTRANT_LOCK.unlock();
+//            }
+            log.debug("2");
+            LockSupport.unpark(t1);
         }, "t2");
 
         t1.start();
