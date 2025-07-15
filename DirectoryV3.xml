@@ -6,4 +6,5 @@
      <tree path="/itheima-juc-study/src/main/java/top/ytahml/chapter04/asynchronous" title="异步-生产者消费者"/>
      <tree path="/itheima-juc-study/src/main/java/top/ytahml/chapter04/SequentialControl.java"
            title="同步模式之顺序控制"/>
+     <tree path="/itheima-juc-study/src/main/java/top/ytahml/chapter04/AlternateOutput.java" title="交替输出"/>
  </trees>
