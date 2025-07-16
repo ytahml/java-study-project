@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import top.ytahml.utils.ThreadUtils;
 
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -19,6 +20,9 @@ import java.util.concurrent.locks.ReentrantLock;
 @Slf4j
 public class AlternateOutput {
 
+    static Thread t1;
+    static Thread t2;
+    static Thread t3;
     public static void main(String[] args) {
 //        WaitNotify waitNotify = new WaitNotify(1, 5);
 //        new Thread(() -> waitNotify.print("a", 1, 2), "a").start();
@@ -41,6 +45,36 @@ public class AlternateOutput {
         } finally {
             awaitSignal.unlock();
         }
+
+        ThreadUtils.sleep(5000);
+
+        System.out.println("=============================================");
+
+        ParkUnpark parkUnpark = new ParkUnpark(5);
+        t1 = new Thread(() -> parkUnpark.print("a", t2));
+        t2 = new Thread(() -> parkUnpark.print("b", t3));
+        t3 = new Thread(() -> parkUnpark.print("c", t1));
+        t1.start();
+        t2.start();
+        t3.start();
+
+        LockSupport.unpark(t1);
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class ParkUnpark {
+        // 定义一个整型变量loopNumber
+        private int loopNumber;
+
+        public void print(String str, Thread next) {
+            for (int i = 0; i < loopNumber; i++) {
+                LockSupport.park();
+                System.out.println(str);
+                LockSupport.unpark(next);
+            }
+        }
+
     }
 
     @Data
