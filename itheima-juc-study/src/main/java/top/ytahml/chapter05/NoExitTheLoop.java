@@ -14,7 +14,8 @@ import static top.ytahml.utils.ThreadUtils.sleep;
 @Slf4j
 public class NoExitTheLoop {
 
-    static boolean run = true;
+    // volatile 易变
+    volatile static boolean run = true;
 
     public static void main(String[] args) {
 
@@ -28,6 +29,7 @@ public class NoExitTheLoop {
         t.start();
 
         sleep(3000);
+        log.debug("停止t");
         run = false;
 
     }
