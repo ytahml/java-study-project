@@ -15,14 +15,21 @@ import static top.ytahml.utils.ThreadUtils.sleep;
 public class NoExitTheLoop {
 
     // volatile 易变
-    volatile static boolean run = true;
+    static boolean run = true;
+
+    static final Object LOCK = new Object();
 
     public static void main(String[] args) {
 
         Thread t = new Thread(() -> {
-            while (run) {
+            while (true) {
                 // ...
 //                log.debug("做一些处理...");
+                synchronized (LOCK) {
+                    if (!run) {
+                        break;
+                    }
+                }
             }
         }, "t");
 
@@ -30,7 +37,9 @@ public class NoExitTheLoop {
 
         sleep(3000);
         log.debug("停止t");
-        run = false;
+        synchronized (LOCK) {
+            run = false;
+        }
 
     }
 
