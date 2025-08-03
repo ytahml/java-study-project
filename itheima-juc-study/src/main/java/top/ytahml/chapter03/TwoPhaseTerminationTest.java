@@ -32,12 +32,20 @@ class TwoPhaseTermination {
 
     private Thread monitor;
 
+    private volatile boolean stop;
+
     // 启动监控线程
     public void start() {
         monitor = new Thread(() -> {
             while (true) {
                 Thread current = Thread.currentThread();
-                if (current.isInterrupted()) {
+//                if (current.isInterrupted()) {
+//                    // 线程被打断
+//                    log.debug("料理后事 ...");
+//                    break;
+//                }
+
+                if (stop) {
                     // 线程被打断
                     log.debug("料理后事 ...");
                     break;
@@ -48,7 +56,7 @@ class TwoPhaseTermination {
                     log.debug("执行监控记录 ...");
                 } catch (InterruptedException e) {
                     log.error(e.getMessage());
-                    current.interrupt();
+//                    current.interrupt();
                 }
 
             }
@@ -58,6 +66,8 @@ class TwoPhaseTermination {
 
     // 关闭监控线程
     public void stop() {
+//        monitor.interrupt();
+        stop = true;
         monitor.interrupt();
     }
 
