@@ -18,6 +18,8 @@ public class TwoPhaseTerminationTest {
 
         TwoPhaseTermination tpt = new TwoPhaseTermination();
         tpt.start();
+        tpt.start();
+        tpt.start();
 
         Thread.sleep(5000);
 
@@ -34,8 +36,19 @@ class TwoPhaseTermination {
 
     private volatile boolean stop;
 
+    // 是否已经执行过
+    private boolean starting;
+
     // 启动监控线程
     public void start() {
+
+        synchronized (this) {
+            if (starting) {
+                return;
+            }
+            starting = true;
+        }
+
         monitor = new Thread(() -> {
             while (true) {
                 Thread current = Thread.currentThread();
