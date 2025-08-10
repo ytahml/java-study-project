@@ -33,7 +33,9 @@ public class InstructionReordering {
     public void actor2(I_Result r) {
         num = 2;
         // ready 之前的代码禁止重排序
+        // 读屏障：在这之后的共享变量的读操作都从主存中读取；
         ready = true;
+        // 写屏障：在这之前的共享变量的写操作都同步到共享变量中；
     }
 
 }
