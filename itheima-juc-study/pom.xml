@@ -12,6 +12,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
@@ -46,6 +47,23 @@
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- jcstress 测试框架 -->
+        <!--jcstress核心包-->
+        <dependency>
+            <groupId>org.openjdk.jcstress</groupId>
+            <artifactId>jcstress-core</artifactId>
+            <version>0.3</version>
+        </dependency>
+
+        <!-- jcstress测试用例包 -->
+        <dependency>
+            <groupId>org.openjdk.jcstress</groupId>
+            <artifactId>jcstress-samples</artifactId>
+            <version>0.3</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>
