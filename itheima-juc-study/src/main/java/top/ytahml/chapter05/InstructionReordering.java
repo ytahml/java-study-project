@@ -18,7 +18,8 @@ import org.openjdk.jcstress.infra.results.I_Result;
 public class InstructionReordering {
 
     int num = 0;
-    boolean ready = false;
+    // 禁用指令重排
+    volatile boolean ready = false;
 
     @Actor
     public void actor1(I_Result r) {
@@ -31,6 +32,7 @@ public class InstructionReordering {
     @Actor
     public void actor2(I_Result r) {
         num = 2;
+        // ready 之前的代码禁止重排序
         ready = true;
     }
 
