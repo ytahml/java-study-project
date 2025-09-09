@@ -23,6 +23,8 @@ public class AccountUnsafe implements Account {
 
     @Override
     public void withdraw(Integer amount) {
-        this.balance -= amount;
+        synchronized (this) {
+            this.balance -= amount;
+        }
     }
 }
