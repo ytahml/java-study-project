@@ -14,8 +14,14 @@ public class AccountTest {
     Account account;
 
     @Test
-    public void test() {
+    public void test1() {
         account = new AccountUnsafe(10000);
+        Account.demo(account);
+    }
+
+    @Test
+    public void test2() {
+        account = new AccountCas(10000);
         Account.demo(account);
     }
 
