@@ -24,16 +24,17 @@ public class AccountCas implements Account {
 
     @Override
     public void withdraw(Integer amount) {
-        while (true) {
-            // 获取线程最新值
-            int prev = balance.get();
-            // 要修改的余额
-            int next = prev - amount;
-            // 真正修改
-            boolean result = balance.compareAndSet(prev, next);
-            if (result) {
-                break;
-            }
-        }
+//        while (true) {
+//            // 获取线程最新值
+//            int prev = balance.get();
+//            // 要修改的余额
+//            int next = prev - amount;
+//            // 真正修改
+//            boolean result = balance.compareAndSet(prev, next);
+//            if (result) {
+//                break;
+//            }
+//        }
+        balance.getAndAdd(-1 * amount);
     }
 }
