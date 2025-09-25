@@ -1,6 +1,7 @@
 package top.ytahml.chapter06.juc;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntUnaryOperator;
 
 /**
  * 基础类型原子类测试
@@ -21,6 +22,22 @@ public class BaseTypeAtomicTest {
         // 先获取再自增指定值
         System.out.println(i.getAndAdd(5));
         System.out.println(i.get());
+
+        // 原子乘法
+//        System.out.println(i.updateAndGet(value -> value * 10));
+        System.out.println(updateAndGet(i, value -> value / 2));
+
+    }
+
+    public static Integer updateAndGet(AtomicInteger i, IntUnaryOperator operator) {
+        // 自己实现原子操作
+        while (true) {
+            int prev = i.get();
+            int next = operator.applyAsInt(prev);
+            if (i.compareAndSet(prev, next)) {
+                return next;
+            }
+        }
     }
 
 }
