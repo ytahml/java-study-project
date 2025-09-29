@@ -2,6 +2,8 @@ package top.ytahml.chapter06;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 /**
  * @author 花木凋零成兰
  * @title AccountTest
@@ -12,6 +14,7 @@ import org.junit.Test;
 public class AccountTest {
 
     Account account;
+    DecimalAccount decimalAccount;
 
     @Test
     public void test1() {
@@ -24,5 +27,13 @@ public class AccountTest {
         account = new AccountCas(10000);
         Account.demo(account);
     }
+
+    @Test
+    public void test3() {
+        decimalAccount = new DecimalAccountCas(new BigDecimal("10000"));
+        DecimalAccount.demo(decimalAccount);
+    }
+
+
 
 }
