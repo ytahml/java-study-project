@@ -18,10 +18,12 @@ public class SimpleDateFormatSycTest {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
-                try {
-                    log.debug("{}", sdf.parse("1961-02-12"));
-                } catch (ParseException e) {
-                    log.error("{}", e.getMessage());
+                synchronized (sdf) {
+                    try {
+                        log.debug("{}", sdf.parse("1961-02-12"));
+                    } catch (ParseException e) {
+                        log.error("{}", e.getMessage());
+                    }
                 }
             }, "t" + (i+1)).start();
         }
