@@ -34,6 +34,12 @@ public class AccountTest {
         DecimalAccount.demo(decimalAccount);
     }
 
+    @Test
+    public void test4() {
+        account = new CustomAccountCas(10000);
+        Account.demo(account);
+    }
+
 
 
 }
