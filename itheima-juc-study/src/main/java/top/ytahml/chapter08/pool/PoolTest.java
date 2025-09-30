@@ -14,12 +14,10 @@ import java.util.concurrent.TimeUnit;
 public class PoolTest {
 
     public static void main(String[] args) {
-        ThreadPool threadPool = new ThreadPool(2, 1000, TimeUnit.SECONDS, 10);
+        ThreadPool threadPool = new ThreadPool(2, 1000, TimeUnit.MILLISECONDS, 10);
         for (int i = 0; i < 5; i++) {
             int finalI = i;
-            threadPool.execute(() -> {
-                log.debug("{}", finalI);
-            });
+            threadPool.execute(() -> log.debug("{}", finalI));
         }
     }
 

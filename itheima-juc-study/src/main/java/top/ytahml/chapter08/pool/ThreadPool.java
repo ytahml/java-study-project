@@ -2,7 +2,6 @@ package top.ytahml.chapter08.pool;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashSet;
@@ -62,7 +61,6 @@ public class ThreadPool {
     }
 
     // 线程信息再包装
-    @ToString
     private class Worker extends Thread {
         private Runnable task;
 
@@ -76,7 +74,7 @@ public class ThreadPool {
             // 执行任务
             // 1、当 task 不为空时，执行任务
             // 2、当 task 执行完后，再接着从任务队列获取任务
-            while (Objects.nonNull(task) || Objects.nonNull((task = taskQueue.take()))) {
+            while (Objects.nonNull(task) || Objects.nonNull((task = taskQueue.poll(timeout, timeUnit)))) {
                 try {
                     log.debug("worker running task: {}", task);
                     task.run();
