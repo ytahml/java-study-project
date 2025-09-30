@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 
 /**
  * SimpleDateFormat 对象线程不安全
@@ -25,6 +27,14 @@ public class SimpleDateFormatSycTest {
                         log.error("{}", e.getMessage());
                     }
                 }
+            }, "t" + (i+1)).start();
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                TemporalAccessor parse = formatter.parse("1961-02-12");
+                log.debug("{}", parse);
             }, "t" + (i+1)).start();
         }
     }
