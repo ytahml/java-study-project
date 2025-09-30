@@ -2,6 +2,7 @@ package top.ytahml.chapter08.pool;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -15,6 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author 花木凋零成兰
  * @since 2025/9/30 下午9:01
  */
+@Slf4j
 public class BlockingQueue<T> {
 
     // 1、任务队列
@@ -87,11 +89,13 @@ public class BlockingQueue<T> {
         try {
             while (queue.size() == capacity) {
                 try {
+                    log.warn("task wait join queue: {}", element);
                     fullWaitSet.await();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
+            log.info("task join queue: {}", element);
             queue.addLast(element);
             // 唤醒等待的消费者
             emptyWaitSet.signal();

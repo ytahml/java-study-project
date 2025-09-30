@@ -54,7 +54,6 @@ public class ThreadPool {
                 workers.add(worker);
                 worker.start();
             } else {
-                log.info("task join queue: {}", task);
                 taskQueue.put(task);
             }
         }
