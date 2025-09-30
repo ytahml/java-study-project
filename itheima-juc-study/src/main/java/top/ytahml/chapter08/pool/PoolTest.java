@@ -15,7 +15,16 @@ import java.util.concurrent.TimeUnit;
 public class PoolTest {
 
     public static void main(String[] args) {
-        ThreadPool threadPool = new ThreadPool(2, 1000, TimeUnit.MILLISECONDS, 10);
+        ThreadPool threadPool = new ThreadPool(
+                2,
+                1000,
+                TimeUnit.MILLISECONDS,
+                10,
+                (queue, task) -> {
+                    // 1 死等
+                    queue.put(task);
+                }
+        );
         for (int i = 0; i < 15; i++) {
             int finalI = i;
             threadPool.execute(() -> {

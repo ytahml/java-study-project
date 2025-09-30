@@ -22,6 +22,8 @@ public class ThreadPool {
     private final BlockingQueue<Runnable> taskQueue;
     // 线程集合
     private final HashSet<Worker> workers = new HashSet<>();
+    // 拒绝策略
+    private final RejectPolicy<Runnable> rejectPolicy;
 
     // 核心线程数
     @Getter
@@ -36,11 +38,12 @@ public class ThreadPool {
     @Setter
     private TimeUnit timeUnit;
 
-    public ThreadPool(int coreSize, long timeout, TimeUnit timeUnit, int queueCapacity) {
+    public ThreadPool(int coreSize, long timeout, TimeUnit timeUnit, int queueCapacity, RejectPolicy<Runnable> rejectPolicy) {
         this.coreSize = coreSize;
         this.timeout = timeout;
         this.timeUnit = timeUnit;
         this.taskQueue = new BlockingQueue<>(queueCapacity);
+        this.rejectPolicy = rejectPolicy;
     }
 
     // 任务执行方法
@@ -54,7 +57,13 @@ public class ThreadPool {
                 workers.add(worker);
                 worker.start();
             } else {
-                taskQueue.put(task);
+                // 1）队列满了死等
+//                taskQueue.put(task);
+                // 2）带超时时间的等待
+                // 3）放弃任务执行
+                // 4）抛出异常
+                // 5）调用者自己执行任务
+                taskQueue.tryPut(rejectPolicy, task);
             }
         }
     }

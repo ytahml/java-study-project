@@ -104,6 +104,34 @@ public class BlockingQueue<T> {
         }
     }
 
+    public boolean offer(T element, long timeout, TimeUnit unit) {
+        lock.lock();
+        try {
+            // 超时时间统一转化为纳秒
+            long nanos = unit.toNanos(timeout);
+            while (queue.size() == capacity) {
+                try {
+                    log.warn("task wait join queue: {}", element);
+                    if (nanos <= 0) {
+                        // 添加失败
+                        log.error("task join queue fail: {}", element);
+                        return false;
+                    }
+                    nanos = fullWaitSet.awaitNanos(nanos);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            log.info("task join queue: {}", element);
+            queue.addLast(element);
+            // 唤醒等待的消费者
+            emptyWaitSet.signal();
+            return true;
+        } finally {
+            lock.unlock();
+        }
+    }
+
     // 获取大小
     public int size() {
         lock.lock();
@@ -114,4 +142,21 @@ public class BlockingQueue<T> {
         }
     }
 
+    public void tryPut(RejectPolicy<T> rejectPolicy, T task) {
+        lock.lock();
+        try {
+            // 判断队列是否已满
+            if (queue.size() == capacity) {
+                rejectPolicy.reject(this, task);
+            } else {
+                // 队列有空闲
+                log.info("task join queue: {}", task);
+                queue.addLast(task);
+                // 唤醒等待的消费者
+                emptyWaitSet.signal();
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
 }
