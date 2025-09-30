@@ -1,5 +1,7 @@
 package top.ytahml.chapter06.juc;
 
+import lombok.Data;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import sun.misc.Unsafe;
 
@@ -19,6 +21,26 @@ public class UnsafeTest {
         theUnsafe.setAccessible(true);
         Unsafe unsafe = (Unsafe) theUnsafe.get(null);
         System.out.println(unsafe);
+
+        // 1、获取属性/域偏移地址
+        long id_offset = unsafe.objectFieldOffset(Teacher.class.getDeclaredField("id"));
+        long name_offset = unsafe.objectFieldOffset(Teacher.class.getDeclaredField("name"));
+
+        Teacher teacher = new Teacher();
+        // 2、执行 CAS 操作
+        unsafe.compareAndSwapInt(teacher, id_offset, 0, 1);
+        unsafe.compareAndSwapObject(teacher, name_offset, null, "imulan");
+
+        // 3、验证修改结果
+        System.out.println(teacher);
+
+    }
+
+    @Data
+    @ToString
+    private static class Teacher {
+        volatile int id;
+        volatile String name;
     }
 
 }
