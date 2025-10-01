@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  * @since 2025/10/1 下午3:35
  */
 @Slf4j
-public class SubmitMethodTest {
+public class MethodSubmitTest {
 
     @SneakyThrows
     public static void main(String[] args) {
