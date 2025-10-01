@@ -32,11 +32,14 @@ public class StarvationTest {
     }
 
     public static void main(String[] args) {
-        ExecutorService pool = Executors.newFixedThreadPool(2);
+        // 专门处理点餐线程池
+        ExecutorService waiterPool = Executors.newFixedThreadPool(1);
+        // 专门处理做菜线程池
+        ExecutorService cookPool = Executors.newFixedThreadPool(1);
         // 一个客人，点餐
-        pool.execute(() -> {
+        waiterPool.execute(() -> {
             log.debug("开始处理点餐 ...");
-            Future<String> result = pool.submit(() -> {
+            Future<String> result = cookPool.submit(() -> {
                 log.debug("做菜任务 ...");
                 return cooking();
             });
@@ -48,9 +51,9 @@ public class StarvationTest {
         });
 
         // 此时来了另一个客人，点餐
-        pool.execute(() -> {
+        waiterPool.execute(() -> {
             log.debug("开始处理点餐 ...");
-            Future<String> result = pool.submit(() -> {
+            Future<String> result = cookPool.submit(() -> {
                 log.debug("做菜任务 ...");
                 return cooking();
             });
