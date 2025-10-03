@@ -40,15 +40,32 @@ public class TimerTest {
 
         // 不同线程执行任务不会相互影响；执行出现异常，后续任务还能继续执行
         ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(1);
-        scheduledPool.schedule(() -> {
-            log.debug("schedule task 1 ...");
-            ThreadUtils.sleep(2000);
-            int a = 1/0;
-        }, 1, TimeUnit.SECONDS);
+//        scheduledPool.schedule(() -> {
+//            log.debug("schedule task 1 ...");
+//            ThreadUtils.sleep(2000);
+//            int a = 1/0;
+//        }, 1, TimeUnit.SECONDS);
+//
+//        scheduledPool.schedule(() -> {
+//            log.debug("schedule task 2 ...");
+//        }, 1, TimeUnit.SECONDS);
 
-        scheduledPool.schedule(() -> {
-            log.debug("schedule task 2 ...");
-        }, 1, TimeUnit.SECONDS);
+        // 固定时间间隔执行一个任务
+        log.debug("task start ...");
+        // 初始延迟时间 1s，时间间隔 1s
+//        scheduledPool.scheduleAtFixedRate(() -> {
+//            log.debug("task running ...");
+//            // 任务本身的执行时间，会影响到任务执行的时间间隔
+//            ThreadUtils.sleep(2000);
+//        }, 1, 1, TimeUnit.SECONDS);
+
+        // 另一个定时任务执行 API
+        // 任务执行间隔时间，是从上一个任务执行完成后开始计算
+        scheduledPool.scheduleWithFixedDelay(() -> {
+            log.debug("task running ...");
+            // 任务本身的执行时间+设置的间隔时间
+            ThreadUtils.sleep(2000);
+        }, 1, 1, TimeUnit.SECONDS);
     }
 
 }
