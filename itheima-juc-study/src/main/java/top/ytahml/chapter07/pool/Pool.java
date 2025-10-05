@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /**
@@ -27,10 +28,13 @@ public class Pool {
     // 3、连接状态数组 0-空闲，1-繁忙
     private final AtomicIntegerArray states;
 
+    private final Semaphore semaphore;
+
     private Pool(int poolSize, Connection[] connections, AtomicIntegerArray states) {
         this.poolSize = poolSize;
         this.connections = connections;
         this.states = states;
+        this.semaphore = new Semaphore(poolSize);
         for (int i = 0; i < poolSize; i++) {
             connections[i] = new MockConnection("conn" + (i+1));
         }
@@ -62,6 +66,27 @@ public class Pool {
         }
     }
 
+    public Connection borrow2() {
+        while (true) {
+            // 获取许可
+            try {
+                // 没有许可的线程池，在此等待
+                semaphore.acquire();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            for (int i = 0; i < poolSize; i++) {
+                // 获取空闲连接
+                if (states.get(i) == 0 && states.compareAndSet(i, 0, 1)) {
+                    log.debug("borrow connection success: {}", connections[i]);
+                    return connections[i];
+                }
+            }
+            // 实际上不会执行
+            return null;
+        }
+    }
+
     // 释放连接
     public void free(Connection conn) {
         for (int i = 0; i < poolSize; i++) {
@@ -71,6 +96,18 @@ public class Pool {
                     log.debug("free connection: {}", conn);
                     this.notifyAll();
                 }
+                break;
+            }
+        }
+
+    }
+
+    public void free2(Connection conn) {
+        for (int i = 0; i < poolSize; i++) {
+            if (connections[i] == conn) {
+                states.set(i, 0);
+                log.debug("free connection: {}", conn);
+                semaphore.release();
                 break;
             }
         }
