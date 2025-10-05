@@ -8,7 +8,9 @@ import java.util.concurrent.locks.StampedLock;
 
 /**
  * StampLock读写锁，性能更好，需要配合戳(stamp)使用
- * 读读并发
+ * 1、读读并发，读写互斥
+ * 2、不支持条件变量
+ * 3、不支持可重入
  * @author 花木凋零成兰
  * @since 2025/10/5 下午1:03
  */
@@ -18,11 +20,14 @@ public class StampLockTest {
     public static void main(String[] args) {
         DataContainerStamped container = new DataContainerStamped(1);
         new Thread(() -> {
-            System.out.println(container.read(1000));
+            int read = container.read(1000);
+            System.out.println(read);
         }, "t1").start();
         ThreadUtils.sleep(500);
         new Thread(() -> {
-            System.out.println(container.read(0));
+//            int read = container.read(0);
+//            System.out.println(read);
+            container.write(1000);
         }, "t2").start();
     }
 
