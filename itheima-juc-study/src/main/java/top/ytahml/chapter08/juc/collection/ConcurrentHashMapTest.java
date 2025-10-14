@@ -31,8 +31,10 @@ public class ConcurrentHashMapTest {
                 () -> new ConcurrentHashMap<String, Integer>(),
                 (map, words) -> {
                     words.forEach(word -> {
+                        // map 是临界区资源；虽然 ConcurrentHashMap 线程安全，但下述操作步骤线程不安全
                         Integer count = map.get(word);
                         int newValue = count == null ? 1 : count + 1;
+                        // 此时线程 put 进去的依旧可能是旧值
                         map.put(word, newValue);
                     });
                 }
