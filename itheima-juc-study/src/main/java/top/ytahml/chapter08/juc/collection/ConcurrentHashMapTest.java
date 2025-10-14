@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -28,14 +29,19 @@ public class ConcurrentHashMapTest {
         // 测试多线程进行单词计数
         demo(
                 // 尝试换成 ConcurrentHashMap；结果依旧不对
-                () -> new ConcurrentHashMap<String, Integer>(),
+                () -> new ConcurrentHashMap<String, LongAdder>(),
                 (map, words) -> {
                     words.forEach(word -> {
                         // map 是临界区资源；虽然 ConcurrentHashMap 线程安全，但下述操作步骤线程不安全
-                        Integer count = map.get(word);
-                        int newValue = count == null ? 1 : count + 1;
+//                        Integer count = map.get(word);
+//                        int newValue = count == null ? 1 : count + 1;
                         // 此时线程 put 进去的依旧可能是旧值
-                        map.put(word, newValue);
+//                        map.put(word, newValue);
+                        // 如果缺少 key 则计算生成值 value，并自动 put 进去；同时会返回 value
+                        // 一个方法完成上述 3 步操作，线程安全
+                        LongAdder value = map.computeIfAbsent(word, (key) -> new LongAdder());
+                        // 上述自动生成 LongAdder 对象后，依旧是 0；接着使用原子累加器自动 + 1
+                        value.increment();
                     });
                 }
         );
