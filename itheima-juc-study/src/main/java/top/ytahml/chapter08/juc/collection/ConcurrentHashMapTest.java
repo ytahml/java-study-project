@@ -7,9 +7,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -27,7 +27,8 @@ public class ConcurrentHashMapTest {
 
         // 测试多线程进行单词计数
         demo(
-                () -> new HashMap<String, Integer>(),
+                // 尝试换成 ConcurrentHashMap；结果依旧不对
+                () -> new ConcurrentHashMap<String, Integer>(),
                 (map, words) -> {
                     words.forEach(word -> {
                         Integer count = map.get(word);
